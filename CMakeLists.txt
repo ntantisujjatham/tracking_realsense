@@ -102,7 +102,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
+  INCLUDE_DIRS include
 #  LIBRARIES tracking_realsense
 #  CATKIN_DEPENDS geometry_msgs pcl_conversions pcl_ros roscpp sensor_msgs
 #  DEPENDS system_lib
@@ -116,6 +116,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 # include_directories(include)
 include_directories(
+  include
   ${catkin_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
 )
@@ -131,13 +132,15 @@ include_directories(
 # add_dependencies(tracking_realsense ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-add_executable(tracking_realsense_node src/tracking_realsense_node.cpp)
+add_executable(segmenting_realsense_node src/segmenting_realsense_node.cpp src/pcl_object_segmenter.cpp)
+add_executable(tracking_realsense_node src/tracking_realsense_node.cpp src/pcl_object_segmenter.cpp src/pcl_object_tracker.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(tracking_realsense_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
+target_link_libraries(segmenting_realsense_node ${catkin_LIBRARIES} ${PCL_LIBRARIES})
 target_link_libraries(tracking_realsense_node ${catkin_LIBRARIES} ${PCL_LIBRARIES})
 
 #############
